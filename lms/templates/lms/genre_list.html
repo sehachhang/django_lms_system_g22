@@ -1,0 +1,23 @@
+{% extends "base_generic.html"%}
+{% block content %}
+<h5>Genres List View</h5>
+<table class="table">
+    <thead>
+        <tr class="table-primary">
+            <th scope="col">Full name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if genre_list %}
+            {% for genres in genre_list %}
+            <tr>
+                <td>{{ genres.name}}</td>
+            </tr>
+            {% endfor %}
+        {%else%}
+        <P>There are no genres in the library</P>
+        {%endif%}
+    </tbody>
+</table>
+{% endblock %}

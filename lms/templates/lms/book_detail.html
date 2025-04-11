@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    
+    <h3><span><a style="color: black;" href="{% url "books" %}"><i class="fa-solid fa-arrow-left"></i></a></span> Title: {{ book.title }}</h3>
+    <p><strong>Summary:</strong> {{ book.summary }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    <p><strong>Genre:</strong> {{ book.displayGenre }}</p> <!-- #display_genre function is defined under book class in models.py -->
+    <hr> <!-- Horizontal Line-->  
+
+    <!-- To list all associated Book Copies based on particular book-->
+     <div style="margin-left: 20px; margin-top: 20px;">
+        <h4>Book Copies of <span style="text-decoration: underline; color: blue;"> {{ book.title }}</span></h4>
+        {% for bookInstance in book.bookinstance_set.all  %}
+          <hr> <!-- Horizontal Line-->  
+          {% comment %} 
+              LOAN_STATUS = (
+                  ('m', 'Maintenance'),
+                  ('o', 'On loan'),
+                  ('a', 'Available'),
+                  ('r', 'Reserved'),
+                )
+          {% endcomment %}
+        <p style="font-weight: bold;"> 
+          {% if bookInstance.status == 'a' %} 
+            <strong style="color: green;">Available</strong> 
+          {% elif  bookInstance.status == 'o' %} 
+            <strong style="color: red;">On Loan</strong> 
+          {% elif  bookInstance.status == 'm' %} 
+            <strong style="color:goldenrod"> Maintenance </strong>
+          {% else %}
+          <strong style="color: orange;">Reserved</strong>
+          {% endif %} </p>
+        
+          <p><strong>Due to be returned:</strong> {{ bookInstance.due_back }}</p>
+          <p><strong>ID (Book Copies)</strong> {{ bookInstance }}</p>
+        {% endfor %}
+     </div>
+    
+{% endblock  %}

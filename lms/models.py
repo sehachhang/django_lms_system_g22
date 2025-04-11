@@ -18,13 +18,13 @@ class Genre(models.Model):
         return reverse("genre-detail", kwargs={"pk": self.pk})
 
 class Language(models.Model):
-    L_name = models.CharField(max_length=20, help_text="Enter Book's Language")
+    name = models.CharField(max_length=20, help_text="Enter Book's Language")
 
     class Meta:
-        ordering = ['L_name']
+        ordering = ['name']
 
     def __str__(self):
-        return self.L_name
+        return self.name
 
     def get_absolute_url(self):
         return reverse("language-detail", kwargs={"pk": self.pk})
@@ -59,25 +59,23 @@ class Book(models.Model):
     displayGenre.short_description = 'Genre' # Set the column name in the admin interface
 
 class Author(models.Model):
-    A_name = models.CharField(max_length=20, help_text="Enter Author's Name")
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField(null=True, blank=True)
+    first_name = models.CharField(max_length=100,default="unknown author")
+    last_name = models.CharField(max_length=100,default="unknown author")
+    date_of_birth = models.DateField("D-O-B",null=True, blank=True)
+    date_of_death = models.DateField("Died", null=True, blank=True)
     class Meta:
-        ordering = ['A_name']
-
-    def __str__(self):
-        return self.A_name
-
+        ordering = ['first_name','last_name']
     def get_absolute_url(self):
         return reverse("author-detail", kwargs={"pk": self.pk})
-
-
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+    
 class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this particular book across the whole library")
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
     borrower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    book = models.ForeignKey(Book, on_delete=models.RESTRICT, null=True)
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, null=False, blank=False)
     LOAN_STATUS = (
         ('m', 'Maintenance'),
         ('o', 'On loan'),
@@ -98,6 +96,7 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_back']
+        permissions = (("can_views_all_borrowed_books", "For Staff account Login can views all Borrowed Books"),)
 
     def get_absolute_url(self):
         return reverse("bookinstance-detail", kwargs={"pk": self.pk})

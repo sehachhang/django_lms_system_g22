@@ -135,7 +135,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+#database
+*.sqlite3
+*.bak
 # Spyder project settings
 .spyderproject
 .spyproject

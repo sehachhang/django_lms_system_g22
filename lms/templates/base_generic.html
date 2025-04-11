@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>LMS System</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar bg-dark navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand h1" href="{% url 'home' %}">LMS System</a>
+                {% if user.is_authenticated %}
+                <P class="navbar-brand h1">Welcome, {{ user.username|capfirst}}</P>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    {% block sidebar %}
+                    <div class="sidebar-nav">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item list-group-item-primary"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
+                            <li class="list-group-item list-group-item-success"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{% url 'books' %}"><i class="fa fa-book"></i> All books</a></li>
+                            <li class="list-group-item list-group-item-secondary"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{% url 'bookintance_list'%}"><i class="fa fa-address-book-o"></i> Book Copies</a></li>
+                            <li class="list-group-item list-group-item-danger"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{%url 'authors'%}"><i class="fa-solid fa-user-graduate"></i> Authors</a></li>
+                            <li class="list-group-item list-group-item-info"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{%url 'genres'%}"><i class="fa fa-sliders"></i> Genres</a></li>
+                            <li class="list-group-item list-group-item-danger"><a class="link-offset-2 link-underline link-underline-opacity-0"href="{%url 'languages'%}"><i class="fa fa-language"></i> Languages</a></li>
+                            <li class="list-group-item list-group-item-dark"><a class="link-offset-2 link-underline link-underline-opacity-0"href="#"><i class='fas fa-address-card'></i> About Us</a></li>
+                            {% if perms.lms.can_view_all_borrowed_books %}
+                            <li class="list-group-item"><strong>STAFF</strong></li>
+                            <li class="list-group-item"><a href="{% url 'all-borrowed' %}">All Book Borrowed</a></li>
+                            <li class="list-group-item"><a href="{% url 'author-create' %}">Create Author</a></li>
+                            <li class="list-group-item"><a href="{% url 'bookinstance-create' %}">Create BookInstance</a></li>
+                            <li class="list-group-item"><a href="{% url 'book-search' %}">Search Book</a></li>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            <li class="list-group-item"><strong>Username: {{ user.username|capfirst }}</strong></li>
+                            <li class="list-group-item"><a href="{% url "mybooks"%}">My Borrowed Books</a></li>
+                            <li class="list-group-item">
+                                <form id="logout" action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                </form>
+                            </li>
+                            {% else %}
+                                {% comment %} <button type="submit" action="{% url 'login' %}" class="btn btn-danger">Login</button> {% endcomment %}
+                                <li class="list-group-item"><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+                            {% endif %}
+                            {% if user.is_staff %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endblock %}
+                </div>
+                <div class="col-10">
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 LMS System</p>
+    </footer>
+    <script src="https://kit.fontawesome.com/0f1a85b70d.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

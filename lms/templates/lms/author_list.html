@@ -1,0 +1,27 @@
+{% extends "base_generic.html"%}
+{% block content %}
+<h5>Author List View</h5>
+<table class="table">
+    <thead>
+        <tr class="table-primary">
+            <th scope="col">Full name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Date of Death</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if author_list %}
+            {% for author in author_list %}
+            <tr>
+                <td><a href="{{ author.get_absolute_url}}">{{author}}</a></td>
+                <td>{{ author.date_of_birth }}</td>
+                <td>{{ author.date_of_death }}</td>
+            </tr>
+            {% endfor %}
+        {%else%}
+        <P>There are no authors in the library</P>
+        {%endif%}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base_generic.html"%}
+
+{% block content %}
+<h5>All Books Copies List</h5>
+<table class="table">
+    <thead>
+        <tr class="table-primary">
+            <th scope="col">ID</th>
+            <th scope="col">Book Title</th>
+            <th scope="col">Imprint</th>
+            <th scope="col">Borrower</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if bookinstance_list %}
+            {% for bookinstance in bookinstance_list %}
+            <tr>
+                <td>{{bookinstance}}</td>
+                <td><a href="{% url 'book-detail' bookinstance.book.id %}">{{ bookinstance.book.title }}</a></td>
+                <td>{{bookinstance.imprint}}</td>
+                <td>{{bookinstance.borrower}}</td>
+            </tr>
+            {% endfor %}
+        {%else%}
+        <P>There are no books in the library</P>
+        {%endif%}
+    </tbody>
+</table>
+{% endblock %}

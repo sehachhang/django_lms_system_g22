@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome to Library</h1>
-    <table>
-        <tr>
-            <td>Data Point</td>
-            <td>Number</td>
-        </tr>
-        <tr>
-            <td>Books:</td>
-            <td>{{numbooks}}</td>
-        </tr>
-        <tr>
-            <td>Books of copies:</td>
-            <td>{{numinstances}}</td>
-        </tr>
-    </table>
-</body>
-</html>
+{% extends "base_generic.html" %}
+{% block content %}
+<table class="table">
+    <tbody>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-secondary text-white">
+                Items
+                <span>Number of items</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Original Books
+                <span class="badge text-bg-primary rounded-pill">{{numbooks}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Total Book Copies
+                <span class="badge text-bg-primary rounded-pill">{{numinstances}}</span>
+            </li>
+        </ul>
+    </tbody>
+</table>
+{% endblock %}
